@@ -14,10 +14,10 @@
         </div>    
       </div>    
       <div class="row g-2">
-        <div class="col-lg-4">
+        <div class="col-md-4">
           <img :src="thumbnail" alt="" srcset="" class="rounded shadow">
         </div>
-        <div class="col-lg-8">
+        <div class="col-md-8">
           <div class="container-description">
             <h1>{{ title }}</h1>
             <br>
@@ -174,9 +174,10 @@ export default {
     padding-top: 30px;
   }
 
-  @media only screen and (min-width: 992px) {
+  @media only screen and (min-width: 768px) {
     .container-description {
       padding: 0 0 0 50px;
     }
-  }   
+  } 
+   
 </style>

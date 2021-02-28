@@ -225,10 +225,6 @@ export default {
     font-size: 12px;
   }
 
-  @media only screen and (min-width: 768px) {
-
-  } 
-
   @media only screen and (min-width: 992px) {
     .container_search {
       margin-bottom: 50px;
