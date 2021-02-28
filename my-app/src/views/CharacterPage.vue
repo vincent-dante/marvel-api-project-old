@@ -45,7 +45,6 @@
           <h5 v-show="showNoComicsFound" class="text-center">No comics found...</h5>
         </div>
 
-
         <div class="col-sm-12 col-md-6 col-lg-3" v-for="(comics, id) in characterComics" :key="id">
 
           <div class="card shadow-sm mb-2 me-0 ms-0 text-start card-character" @click="getComics(comics.id)">

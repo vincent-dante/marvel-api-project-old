@@ -2,6 +2,7 @@
 
   <div  v-show="!showLoadingPage" class="content-container">
     <div class="container">
+
       <div class="row g-2">
         <div class="col-lg-4 mb-5">
           <a href="#" @click.prevent="goBack()" class="a-link a-link-dash-after">
@@ -13,6 +14,7 @@
           <router-link to="/" class="a-link">Home</router-link>
         </div>    
       </div>    
+
       <div class="row g-2">
         <div class="col-md-4">
           <img :src="thumbnail" alt="" srcset="" class="rounded shadow">
@@ -26,7 +28,7 @@
             <br>
             <div>
               <template v-for="(data, id) in creators.items" :key="id">
-                <a href="#" class="creator-link rounded-end shadow">
+                <a href="#" class="creator-link rounded-end shadow" @click.prevent="getCreator(data.resourceURI)">
                   <span class="creator-link-span rounded-top">{{ data.role }}</span>
                   {{ data.name }}
                 </a>
@@ -37,6 +39,7 @@
           </div>
         </div>
       </div>
+
     </div>
   </div>
 
@@ -98,12 +101,15 @@ export default {
         this.description = (res[0].description === null) ? "" : res[0].description;
         this.thumbnail = res[0].thumbnail.path+'.'+res[0].thumbnail.extension;
         this.creators = res[0].creators;
-
+      
         this.showLoadingPage = false;
       })
-      .catch(err => {
-        console.error(err);
-      })
+      .catch( err => console.error(err) )
+
+    },
+    getCreator(creator_url){
+      let id = creator_url.substring(creator_url.lastIndexOf('/') + 1)
+      this.$router.push({ path: `/creatorpage/${id}` })  
 
     },
     goBack(){
