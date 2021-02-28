@@ -115,24 +115,24 @@ export default {
 		},
 		getCreatorComics(id){
 
-      axios
-      .get(`/characters/creator/${id}/comics`)
-      .then( response => {
+			axios
+			.get(`/characters/creator/${id}/comics`)
+			.then( response => {
 
-        let res = response.data;
-        this.creatorComics = res;
-        (this.creatorComics.length === 0) ? this.showNoComicsFound = true : this.showNoComicsFound = false;
+				let res = response.data;
+				this.creatorComics = res;
+				(this.creatorComics.length === 0) ? this.showNoComicsFound = true : this.showNoComicsFound = false;
 
-        this.showLoadingPage = false;
-      })
-      .catch( err => console.error(err) )
+				this.showLoadingPage = false;
+			})
+			.catch( err => console.error(err) )
 
-    },
+		},
 		getComics(comics_id){
 
-      this.$router.push({ path: `/comicspage/${comics_id}` })  
+			this.$router.push({ path: `/comicspage/${comics_id}` })  
 
-    },
+		},
 		goBack(){
 
 			this.$router.go(-1)
@@ -143,62 +143,62 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  .a-link {
-    font-style: italic;
-    font-size: 18px;
-    padding: 10px 5px 10px 0;
-    margin-right: 10px;
-    text-decoration: none;
-  }
+	.a-link {
+		font-style: italic;
+		font-size: 18px;
+		padding: 10px 5px 10px 0;
+		margin-right: 10px;
+		text-decoration: none;
+	}
 
-  .a-link-dash-after::after {
-    content: "/";
-    padding-left: 10px;
-  }
+	.a-link-dash-after::after {
+		content: "/";
+		padding-left: 10px;
+	}
 
-  .container {
-    text-align: left;
-  }
+	.container {
+		text-align: left;
+	}
 
-  img {
-    width: 100%;
-  }
+	img {
+		width: 100%;
+	}
 
-  .comics_title {
-    font-weight: bold;
-    padding-top: 10px;
-  }
+	.comics_title {
+		font-weight: bold;
+		padding-top: 10px;
+	}
 
-  .thumbnail-card-container {
-    overflow: hidden;
-  }
+	.thumbnail-card-container {
+		overflow: hidden;
+	}
 
-  .thumbnail-card {
-    transition: 0.6s ease-in-out;
-  }
+	.thumbnail-card {
+		transition: 0.6s ease-in-out;
+	}
 
-  .card-character {
-    cursor: pointer;
-  }
+	.card-character {
+		cursor: pointer;
+	}
 
-  .card-character:hover .thumbnail-card{
-    -ms-transform: scale(1.10);
-    -o-transform: scale(1.10);
-    -webkit-transform: scale(1.10);
-    transform: scale(1.10);  
-  }
+	.card-character:hover .thumbnail-card{
+		-ms-transform: scale(1.10);
+		-o-transform: scale(1.10);
+		-webkit-transform: scale(1.10);
+		transform: scale(1.10);  
+	}
 
-  .container-description {
-    padding-top: 30px;
-  }
+	.container-description {
+		padding-top: 30px;
+	}
 
-  .footer-text-box {
-    font-size: 12px;
-  }
+	.footer-text-box {
+		font-size: 12px;
+	}
 
-  @media only screen and (min-width: 768px) {
-    .container-description {
-      padding: 0 0 0 50px;
-    }
-  } 
+	@media only screen and (min-width: 768px) {
+		.container-description {
+			padding: 0 0 0 50px;
+		}
+	} 
 </style>
