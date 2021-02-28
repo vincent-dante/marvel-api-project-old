@@ -11,12 +11,12 @@
 						Back
 					</a>
 					<router-link to="/" class="a-link">Home</router-link>
-				</div>
+				</div>	
 				</div>
 				<div class="row g-2">
 					<div class="col-md-4">
 						<img :src="thumbnail" alt="" srcset="" class="rounded shadow">
-					</div>
+					</div>	
 				<div class="col-md-8">
 					<div class="container-description">
 						<h1>{{ fullName }}</h1>
