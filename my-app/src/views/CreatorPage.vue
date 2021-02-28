@@ -78,116 +78,116 @@ const axios = require('axios');
 export default {
   name: 'CreatorPage',
   data() {
-	return {
-	  showLoadingPage: true,
-	  fullName: "",
-	  thumbnail: ""
-	}
+	  return {
+	    showLoadingPage: true,
+	    fullName: "",
+	    thumbnail: ""
+	  }
   },
   setup(){
-	const route = useRoute();
-	const id = route.params.id;
+	  const route = useRoute();
+	  const id = route.params.id;
 
-	return {
-	  id
-	};
+	  return {
+	   id
+	  };
   },
   mounted(){
-	this.showLoadingPage = true;
-	this.getCreator(this.id)
+	  this.showLoadingPage = true;
+	  this.getCreator(this.id)
 
   },
   methods: {
-	getCreator(id){
+		getCreator(id){
 
-	  axios
-	  .get(`/characters/creator/${id}`)
-	  .then( response => {
-		  console.log(response)
-		let res = response.data;
-		this.fullName = res[0].fullName;
-		this.thumbnail = res[0].thumbnail.path+'.'+res[0].thumbnail.extension;
+			axios
+			.get(`/characters/creator/${id}`)
+			.then( response => {
+				console.log(response)
+			let res = response.data;
+			this.fullName = res[0].fullName;
+			this.thumbnail = res[0].thumbnail.path+'.'+res[0].thumbnail.extension;
 
 
-		this.showLoadingPage = false;
-	  })
-	  .catch(err => {
-		console.error(err);
-	  })
+			this.showLoadingPage = false;
+			})
+			.catch(err => {
+			console.error(err);
+			})
 
-	},
-	goBack(){
+		},
+		goBack(){
 
-	  this.$router.go(-1)
+			this.$router.go(-1)
 
-	}
+		}
   }
 }
 </script>
 
 <style lang="scss" scoped>
-  .a-link {
-	font-style: italic;
-	font-size: 18px;
-	padding: 10px 5px 10px 0;
-	margin-right: 10px;
-	text-decoration: none;
-  }
-
-  .a-link-dash-after::after {
-	content: "/";
-	padding-left: 10px;
-  }
-
-  .container {
-	text-align: left;
-  }
-
-  img {
-	width: 100%;
-  }
-
-  .creator-link {
-	display: inline-block;
-	position: relative;
-	color: #fff;
-	background: #bb4447;
-	padding: 5px 5px 5px 10px !important;
-	margin: 20px 5px;
-	text-decoration: none;
-	min-width: 180px;
-	font-size: 15px;
-	cursor: pointer;
-	bottom: 0;
-	transition: bottom 0.3s ease-in-out;
-  }
-
-  .creator-link:hover,
-  .creator-link:focus
-  {
-	bottom: 8px;
-  }
-
-
-  .creator-link-span {
-	position: absolute;
-	bottom: 32px;
-	left: 0px;
-	background: #444;
-	padding: 0 5px;
-	font-size: 13px;
-	font-weight: bold;
-	color: #fff;
-  }
-
-  .container-description {
-	padding-top: 30px;
-  }
-
-  @media only screen and (min-width: 768px) {
-	.container-description {
-	  padding: 0 0 0 50px;
+	.a-link {
+		font-style: italic;
+		font-size: 18px;
+		padding: 10px 5px 10px 0;
+		margin-right: 10px;
+		text-decoration: none;
 	}
-  }
+
+	.a-link-dash-after::after {
+		content: "/";
+		padding-left: 10px;
+	}
+
+	.container {
+		text-align: left;
+	}
+
+	img {
+		width: 100%;
+	}
+
+	.creator-link {
+		display: inline-block;
+		position: relative;
+		color: #fff;
+		background: #bb4447;
+		padding: 5px 5px 5px 10px !important;
+		margin: 20px 5px;
+		text-decoration: none;
+		min-width: 180px;
+		font-size: 15px;
+		cursor: pointer;
+		bottom: 0;
+		transition: bottom 0.3s ease-in-out;
+	}
+
+	.creator-link:hover,
+	.creator-link:focus
+	{
+		bottom: 8px;
+	}
+
+
+	.creator-link-span {
+		position: absolute;
+		bottom: 32px;
+		left: 0px;
+		background: #444;
+		padding: 0 5px;
+		font-size: 13px;
+		font-weight: bold;
+		color: #fff;
+	}
+
+	.container-description {
+		padding-top: 30px;
+	}
+
+	@media only screen and (min-width: 768px) {
+		.container-description {
+			padding: 0 0 0 50px;
+		}
+	}
 
 </style>
