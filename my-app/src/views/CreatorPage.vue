@@ -40,7 +40,7 @@
         </div>
 
 
-        <div class="col-sm-12 col-md-6 col-lg-3" v-for="(comics, id) in characterComics" :key="id">
+        <div class="col-sm-12 col-md-6 col-lg-3" v-for="(comics, id) in creatorComics" :key="id">
 
           <div class="card shadow-sm mb-2 me-0 ms-0 text-start card-character" @click="getComics(comics.id)">
             <div class="thumbnail-card-container">
@@ -95,6 +95,7 @@ export default {
   mounted(){
     this.showLoadingPage = true;
     this.getCreator(this.id)
+    this.getCreatorComics(this.id)
 
   },
   methods: {
@@ -107,12 +108,29 @@ export default {
         let res = response.data;
         this.fullName = res[0].fullName;
         this.thumbnail = res[0].thumbnail.path+'.'+res[0].thumbnail.extension;
-
-
-        this.showLoadingPage = false;
       })
       .catch( err => console.error(err) )
     },
+    getCreatorComics(id){
+
+    axios
+    .get(`/characters/creator/${id}/comics`)
+    .then( response => {
+
+      let res = response.data;
+      this.creatorComics = res;
+      (this.creatorComics.length === 0) ? this.showNoComicsFound = true : this.showNoComicsFound = false;
+
+      this.showLoadingPage = false;
+    })
+    .catch( err => console.error(err) )
+
+    },
+    getComics(comics_id){
+
+      this.$router.push({ path: `/comicspage/${comics_id}` })  
+
+    },  
     goBack(){
 
       this.$router.go(-1)
@@ -144,47 +162,42 @@ export default {
     width: 100%;
   }
 
-  .creator-link {
-    display: inline-block;
-    position: relative;
-    color: #fff;
-    background: #bb4447;
-    padding: 5px 5px 5px 10px !important;
-    margin: 20px 5px;
-    text-decoration: none;
-    min-width: 180px;
-    font-size: 15px;
-    cursor: pointer;
-    bottom: 0;
-    transition: bottom 0.3s ease-in-out;
-  }
-
-  .creator-link:hover,
-  .creator-link:focus
-  {
-    bottom: 8px;
-  }
-
-
-  .creator-link-span {
-    position: absolute;
-    bottom: 32px;
-    left: 0px;
-    background: #444;
-    padding: 0 5px;
-    font-size: 13px;
+  .comics_title {
     font-weight: bold;
-    color: #fff;
+    padding-top: 10px;
+  }
+
+  .thumbnail-card-container {
+    overflow: hidden;
+  }
+
+  .thumbnail-card {
+    transition: 0.6s ease-in-out;
+  }
+
+  .card-character {
+    cursor: pointer;
+  }
+
+  .card-character:hover .thumbnail-card{
+    -ms-transform: scale(1.10);
+    -o-transform: scale(1.10);
+    -webkit-transform: scale(1.10);
+    transform: scale(1.10);  
   }
 
   .container-description {
     padding-top: 30px;
   }
 
+  .footer-text-box {
+    font-size: 12px;
+  }
+
   @media only screen and (min-width: 768px) {
     .container-description {
       padding: 0 0 0 50px;
     }
-  }
+  } 
 
 </style>
