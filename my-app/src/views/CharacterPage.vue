@@ -46,7 +46,7 @@
         </div>
 
 
-        <div class="col-lg-3" v-for="(comics, id) in characterComics" :key="id">
+        <div class="col-sm-12 col-md-6 col-lg-3" v-for="(comics, id) in characterComics" :key="id">
 
           <div class="card shadow-sm mb-2 me-0 ms-0 text-start card-character" @click="getComics(comics.id)">
             <div class="thumbnail-card-container">
@@ -205,11 +205,22 @@ export default {
   }
 
   .container-description {
-    padding-left: 50px;
+    padding-top: 30px;
   }
 
   .footer-text-box {
     font-size: 12px;
   }
 
+  @media only screen and (min-width: 768px) {
+    .container-description {
+      padding: 0 0 0 50px;
+    }
+  } 
+
+  @media only screen and (min-width: 992px) {
+    .container-description {
+      padding: 0 0 0 50px;
+    }
+  } 
 </style>

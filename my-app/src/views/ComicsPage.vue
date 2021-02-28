@@ -26,10 +26,10 @@
             <br>
             <div>
               <template v-for="(data, id) in creators.items" :key="id">
-                <p class="creator-link">
-                  {{ data.name }},
-                  {{ data.role }}
-                </p>
+                <a href="#" class="creator-link rounded-end shadow">
+                  <span class="creator-link-span rounded-top">{{ data.role }}</span>
+                  {{ data.name }}
+                </a>
               </template>
             </div>
             <br>
@@ -139,12 +139,44 @@ export default {
 
   .creator-link {
     display: inline-block;
-    background: lightcoral;
-    padding: 5px;
-    margin-right: 20px;
+    position: relative;
+    color: #fff;
+    background: #bb4447;
+    padding: 5px 5px 5px 10px !important;
+    margin: 20px 5px;
+    text-decoration: none;
+    min-width: 180px;
+    font-size: 15px;
+    cursor: pointer;
+    bottom: 0;
+    transition: bottom 0.3s ease-in-out;
+  }
+
+  .creator-link:hover, 
+  .creator-link:focus 
+  {
+    bottom: 8px;
+  }
+
+
+  .creator-link-span {
+    position: absolute;
+    bottom: 32px;
+    left: 0px;
+    background: #444;
+    padding: 0 5px;
+    font-size: 13px;
+    font-weight: bold;
+    color: #fff;
   }
 
   .container-description {
-    padding-left: 50px;
+    padding-top: 30px;
   }
+
+  @media only screen and (min-width: 992px) {
+    .container-description {
+      padding: 0 0 0 50px;
+    }
+  }   
 </style>
