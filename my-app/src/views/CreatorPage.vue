@@ -1,40 +1,55 @@
 <template>
-  <div v-show="!showLoadingPage" class="content-container">
-    
-    <div class="container_search">
-      <input type="text" class="shadow-sm" placeholder="Search now!" v-model="characterName" @keyup.enter="searchCharacter()">
-      <input type="button" class="shadow-sm" value="Search" @click="searchCharacter()">
-    </div>
 
-    <div v-show="noResult">No Result Found</div>
-    
+  <div  v-show="!showLoadingPage" class="content-container">
     <div class="container">
-      <div class="row g-2">
-        <div class="col-sm-12 col-md-6 col-lg-3" v-for="(column, id) in columns" :key="id">
-          
-          <div class="card shadow-sm mb-3 me-1 ms-1 text-start card-character" v-for="character in column" :key="character.id" @click="showCharacter(character)">
-            <div class="thumbnail-card-container">
-              <img :src="character.thumbnail.path+'.'+character.thumbnail.extension" alt="" srcset="" class="card-img-top thumbnail-card">
-            </div>
-            <div class="card-body">
-              <h5 class="card-title">{{ character.name }}</h5>
-              <br>
-              <hr>
-              <span class="footer-text-box">Data provided by Marvel. © 2014 Marvel</span>
-            </div>
-          </div>
 
+      <div class="row g-2">
+        <div class="col-lg-4 mb-5">
+          <a href="#" @click.prevent="goBack()" class="a-link a-link-dash-after">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-return-left" viewBox="0 0 16 16">
+              <path fill-rule="evenodd" d="M14.5 1.5a.5.5 0 0 1 .5.5v4.8a2.5 2.5 0 0 1-2.5 2.5H2.707l3.347 3.346a.5.5 0 0 1-.708.708l-4.2-4.2a.5.5 0 0 1 0-.708l4-4a.5.5 0 1 1 .708.708L2.707 8.3H12.5A1.5 1.5 0 0 0 14 6.8V2a.5.5 0 0 1 .5-.5z"/>
+            </svg>
+             Back
+          </a> 
+          <router-link to="/" class="a-link">Home</router-link>
+        </div>    
+      </div>    
+
+      <div class="row g-2">
+        <div class="col-md-4">
+          <img :src="thumbnail" alt="" srcset="" class="rounded shadow">
+        </div>
+        <div class="col-md-8">
+          <div class="container-description">
+            <h1>{{ title }}</h1>
+            <br>
+            <p v-if="description.length != 0" class="" v-html="description"></p>
+            <p v-else class="">No description found.</p>
+            <br>
+            <div>
+              <template v-for="(data, id) in creators.items" :key="id">
+                <a href="#" class="creator-link rounded-end shadow" @click.prevent="getCreator(data.resourceURI)">
+                  <span class="creator-link-span rounded-top">{{ data.role }}</span>
+                  {{ data.name }}
+                </a>
+              </template>
+            </div>
+            <br>
+            <p class=""><small class="text-muted">Data provided by Marvel. © 2014 Marvel</small></p>
+          </div>
         </div>
       </div>
+
     </div>
-    
   </div>
+
 
   <div v-show="showLoadingPage" class="holder">
     <div class="preloader">
       <div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div>
     </div>
   </div>  
+
 </template>
 
 <script>
@@ -44,120 +59,62 @@ const axios = require('axios');
 
 
 export default {
-  name: 'Home',
-  data(){
+  name: 'ComicsPage',
+  data() {
     return {
       showLoadingPage: true,
-      characterList: [],
-      noResult: false,
-      cols: 4,
-      characterData: {
-        name: '',
-        thumbnail: '',
-        description: '',
-        id: ''
-      },
-      characterComics: [],
-      singleComicData: [{
-        title: '',
-        thumbnail: '',
-        description: '',
-        id: '',
-        creators: {
-          items: [
-            {
-              name: ""
-            }
-          ]
-        }
-      }]
+      title: "",
+      description: "",
+      thumbnail: "",  
+      creators: {
+        items: [
+          {
+            name: "",
+            role: ""
+          }
+        ]
+      }
     }
   },
   setup(){
     const route = useRoute();
-    const characterName = (route.query.characterName === undefined) ? "" : route.query.characterName;
+    const id = route.params.id;
 
     return {
-      characterName
+      id
     };
   },
-  mounted(){    
+  mounted(){
+    this.showLoadingPage = true;
+    this.getComics(this.id)
 
-    if (this.characterName.length != 0) this.searchCharacter()
-    else this.getCharacters()  
-
-  },
-  computed: {
-    columns: function() {
-      let columns = [];
-      let mid = Math.ceil(Object.keys(this.characterList).length / this.cols);
-      for (let col = 0; col < this.cols; col++) {
-          columns.push(Object.entries(this.characterList).slice(col * mid, col * mid + mid).map(entry => entry[1]));
-      }
-      return columns;
-    },
   },
   methods: {
-    searchCharacter(){
-
-      this.showLoadingPage = true;
-      if (this.characterName.length === 0) this.getCharacters()
-      else this.getCharacter()
-
-    },
-    getCharacters(){
-      this.noResult = false
+    getComics(id){
 
       axios
-      .get('/characters')
+      .get(`/characters/comics/${id}`)
       .then( response => {
+
         let res = response.data;
-        this.characterList = []
+        this.title = res[0].title;
+        this.description = (res[0].description === null) ? "" : res[0].description;
+        this.thumbnail = res[0].thumbnail.path+'.'+res[0].thumbnail.extension;
+        this.creators = res[0].creators;
       
-        res.forEach(element => {
-          this.characterList.push({
-            name: element.name,
-            thumbnail: element.thumbnail,
-            description: element.description,
-            id: element.id
-          })
-        });
-
         this.showLoadingPage = false;
       })
       .catch( err => console.error(err) )
 
     },
-    getCharacter(){
-      let character = this.characterName
-      this.noResult = false
-
-      axios
-      .get(`/characters/name/${character}`)
-      .then( response => {
-        let res = response.data;
-        this.characterList = []
-
-        res.forEach(element => {
-          this.characterList
-          .push({
-            name: element.name,
-            thumbnail: element.thumbnail,
-            description: element.description,
-            id: element.id
-          })
-        });
-
-        (this.characterList.length === 0) ? this.noResult = true : this.noResult = false
-
-        this.showLoadingPage = false;
-      })
-      .catch( err => console.error(err) )
+    getCreator(creator_url){
+      let id = creator_url.substring(creator_url.lastIndexOf('/') + 1)
+      this.$router.push({ path: `/creatorpage/${id}` })  
 
     },
-    showCharacter(character) {
+    goBack(){
 
-      this.$router.push({ path: `/characterpage/${character.id}`, query: { characterName: this.characterName } })    
+      this.$router.go(-1)
 
     }
   }
@@ -165,73 +122,68 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  .container_search {
-    margin: 50px 0;
-
-    input[type="text"],
-    input[type="button"] {
-      outline: none
-    }
-
-    input[type=text] {
-      border: 1px solid #b3b3b3;
-      border-radius: 20px;
-      padding: 10px 20px;
-      color: #020202;
-      width: 55%;
-    }
-
-    input[type=button] {
-      padding: 10px 20px;
-      margin-left: 10px;
-      border: none;
-      border-radius: 40px;
-      cursor: pointer;
-      color: #5e5e5e;
-      background: #d7d7d7;
-      transition: 0.5s ease-in-out;
-    }
-
-    input[type=button]:hover, 
-    input[type=button]:focus 
-    {
-      color: #ececec;
-      background: #282828;
-    }
+  .a-link {
+    font-style: italic;
+    font-size: 18px;
+    padding: 10px 5px 10px 0;
+    margin-right: 10px;
+    text-decoration: none;
   }
 
-  .thumbnail-card-container {
-    overflow: hidden;
+  .a-link-dash-after::after {
+    content: "/";
+    padding-left: 10px;
   }
 
-  .thumbnail-card {
-    transition: 0.6s ease-in-out;
+  .container {
+    text-align: left;
   }
 
-  .card-character {
+  img {
+    width: 100%;
+  }
+
+  .creator-link {
+    display: inline-block;
+    position: relative;
+    color: #fff;
+    background: #bb4447;
+    padding: 5px 5px 5px 10px !important;
+    margin: 20px 5px;
+    text-decoration: none;
+    min-width: 180px;
+    font-size: 15px;
     cursor: pointer;
+    bottom: 0;
+    transition: bottom 0.3s ease-in-out;
   }
 
-  .card-character:hover
-  .thumbnail-card 
+  .creator-link:hover, 
+  .creator-link:focus 
   {
-    -ms-transform: scale(1.20);
-    -o-transform: scale(1.20);
-    -webkit-transform: scale(1.20);
-    transform: scale(1.20);  
+    bottom: 8px;
   }
 
-  .footer-text-box {
-    font-size: 12px;
+
+  .creator-link-span {
+    position: absolute;
+    bottom: 32px;
+    left: 0px;
+    background: #444;
+    padding: 0 5px;
+    font-size: 13px;
+    font-weight: bold;
+    color: #fff;
   }
 
-  @media only screen and (min-width: 992px) {
-    .container_search {
-      margin-bottom: 50px;
+  .container-description {
+    padding-top: 30px;
+  }
 
-      input[type=text] {
-        width: 30%;
-      }
+  @media only screen and (min-width: 768px) {
+    .container-description {
+      padding: 0 0 0 50px;
     }
   } 
+   
 </style>
