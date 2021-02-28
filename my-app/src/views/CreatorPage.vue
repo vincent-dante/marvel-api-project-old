@@ -201,5 +201,4 @@ export default {
       padding: 0 0 0 50px;
     }
   } 
-
 </style>
