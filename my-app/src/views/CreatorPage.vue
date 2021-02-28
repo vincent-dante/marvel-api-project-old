@@ -113,17 +113,17 @@ export default {
     },
     getCreatorComics(id){
 
-    axios
-    .get(`/characters/creator/${id}/comics`)
-    .then( response => {
+      axios
+      .get(`/characters/creator/${id}/comics`)
+      .then( response => {
 
-      let res = response.data;
-      this.creatorComics = res;
-      (this.creatorComics.length === 0) ? this.showNoComicsFound = true : this.showNoComicsFound = false;
+        let res = response.data;
+        this.creatorComics = res;
+        (this.creatorComics.length === 0) ? this.showNoComicsFound = true : this.showNoComicsFound = false;
 
-      this.showLoadingPage = false;
-    })
-    .catch( err => console.error(err) )
+        this.showLoadingPage = false;
+      })
+      .catch( err => console.error(err) )
 
     },
     getComics(comics_id){
