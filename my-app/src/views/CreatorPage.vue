@@ -80,6 +80,7 @@ export default {
   data() {
     return {
       showLoadingPage: true,
+      showNoComicsFound: false,
       fullName: "",
       thumbnail: ""
     }
