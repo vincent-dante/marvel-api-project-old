@@ -92,34 +92,6 @@ app.get('/characters/comics/:id', function (req, res) {
 })
 
 
-app.get('/characters/creator/:id', function (req, res) {
-
-  fetch(`https://gateway.marvel.com:443/v1/public/creators/${req.params.id}?ts=${start}&apikey=${publicApiKey}&hash=${md5sum}`)
-    .then(res => {
-      return res.json()
-    })
-    .then(json => {
-      res.send(json.data.results)
-    })
-    .catch(err => console.error(err));
-
-})
-
-
-app.get('/characters/creator/:id/comics', function (req, res) {
-
-  fetch(`https://gateway.marvel.com:443/v1/public/creators/${req.params.id}/comics?ts=${start}&apikey=${publicApiKey}&hash=${md5sum}`)
-    .then(res => {
-      return res.json()
-    })
-    .then(json => {
-      res.send(json.data.results)
-    })
-    .catch(err => console.error(err));
-
-})
-
-
 
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`)
