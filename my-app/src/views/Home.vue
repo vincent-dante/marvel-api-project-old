@@ -14,7 +14,7 @@
           
           <div class="card shadow-sm mb-3 me-1 ms-1 text-start card-character" v-for="character in column" :key="character.id" @click="showCharacter(character)">
             <div class="thumbnail-card-container">
-              <img :src="character.thumbnail.path+'.'+character.thumbnail.extension" alt="" srcset="" class="card-img-top thumbnail-card">
+              <img :src="replaceImageHttp(character.thumbnail.path+'.'+character.thumbnail.extension)" alt="" srcset="" class="card-img-top thumbnail-card">
             </div>
             <div class="card-body">
               <h5 class="card-title">{{ character.name }}</h5>
@@ -159,6 +159,11 @@ export default {
 
       this.$router.push({ path: `/characterpage/${character.id}`, query: { characterName: this.characterName } })    
 
+    },
+    replaceImageHttp(path){
+
+      return path.replace("http", "https");
+
     }
   }
 }
@@ -212,17 +217,19 @@ export default {
     cursor: pointer;
   }
 
-  .card-character:hover
-  .thumbnail-card 
-  {
-    -ms-transform: scale(1.20);
-    -o-transform: scale(1.20);
-    -webkit-transform: scale(1.20);
-    transform: scale(1.20);  
-  }
-
   .footer-text-box {
     font-size: 12px;
+  }
+
+  @media only screen and (min-width: 768px) {
+    .card-character:hover
+    .thumbnail-card 
+    {
+      -ms-transform: scale(1.20);
+      -o-transform: scale(1.20);
+      -webkit-transform: scale(1.20);
+      transform: scale(1.20);  
+    } 
   }
 
   @media only screen and (min-width: 992px) {
@@ -232,6 +239,6 @@ export default {
       input[type=text] {
         width: 30%;
       }
-    }
+    }   
   } 
 </style>

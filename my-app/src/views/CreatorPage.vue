@@ -15,7 +15,7 @@
         </div>
         <div class="row g-2">
           <div class="col-md-4">
-            <img :src="thumbnail" alt="" srcset="" class="rounded shadow">
+            <img :src="replaceImageHttp(thumbnail)" alt="" srcset="" class="rounded shadow">
           </div>
         <div class="col-md-8">
           <div class="container-description">
@@ -44,8 +44,8 @@
 
           <div class="card shadow-sm mb-2 me-0 ms-0 text-start card-character" @click="getComics(comics.id)">
             <div class="thumbnail-card-container">
-              <img v-if="comics.images.length == 0" :src="'http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available.jpg'" class="card-img-top thumbnail-card">
-              <img v-else :src="comics.images[0].path+'.'+comics.images[0].extension" alt="" class="card-img-top thumbnail-card">
+              <img v-if="comics.images.length == 0" :src="'https://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available.jpg'" class="card-img-top thumbnail-card">
+              <img v-else :src="replaceImageHttp(comics.images[0].path+'.'+comics.images[0].extension)" alt="" class="card-img-top thumbnail-card">
             </div>
             <div class="card-body">
               <h5 class="card-title">{{comics.title}}</h5>
@@ -82,7 +82,8 @@ export default {
       showLoadingPage: true,
       showNoComicsFound: false,
       fullName: "",
-      thumbnail: ""
+      thumbnail: "",
+      creatorComics: []
     }
   },
   setup(){
@@ -105,10 +106,11 @@ export default {
       axios
       .get(`/characters/creator/${id}`)
       .then( response => {
-        console.log(response)
+
         let res = response.data;
         this.fullName = res[0].fullName;
         this.thumbnail = res[0].thumbnail.path+'.'+res[0].thumbnail.extension;
+
       })
       .catch( err => console.error(err) )
     },
@@ -135,6 +137,11 @@ export default {
     goBack(){
 
       this.$router.go(-1)
+
+    },
+    replaceImageHttp(path){
+
+      return path.replace("http", "https");
 
     }
   }
@@ -180,13 +187,6 @@ export default {
     cursor: pointer;
   }
 
-  .card-character:hover .thumbnail-card{
-    -ms-transform: scale(1.10);
-    -o-transform: scale(1.10);
-    -webkit-transform: scale(1.10);
-    transform: scale(1.10);  
-  }
-
   .container-description {
     padding-top: 30px;
   }
@@ -199,6 +199,15 @@ export default {
     .container-description {
       padding: 0 0 0 50px;
     }
+
+    .card-character:hover 
+    .thumbnail-card 
+    {
+      -ms-transform: scale(1.10);
+      -o-transform: scale(1.10);
+      -webkit-transform: scale(1.10);
+      transform: scale(1.10);  
+    }    
   } 
 
 </style>
