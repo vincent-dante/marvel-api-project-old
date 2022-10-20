@@ -11,4 +11,4 @@ Hi there :wave: this is my project for Marvel APIs.
 - :fire: Node.js
 
 ## Live Preview
-https://marvel-app-vincentdante.herokuapp.com
+https://marvel-api-vincentdante.up.railway.app/#/
